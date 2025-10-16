@@ -102,6 +102,8 @@ const coin = document.getElementById('coin');
 const button = document.getElementById('coin-button');
 const counter = document.getElementById('counter');
 
+const coinSound = new Audio('https://arenaesports.com.br/arena/coin.mp3');
+const errorSound = new Audio('https://arenaesports.com.br/arena/error.mp3');
 const coinImageURL = 'https://arenaesports.com.br/arena/coin.png';
 const errorImageURL = 'https://arenaesports.com.br/arena/error.png';
 
@@ -124,12 +126,17 @@ button.addEventListener('click', () => {
       // Atualiza contador
       coinCount++;
       counter.textContent = `Moedas: ${coinCount}`;
+      coinSound.pause();
+      coinSound.currentTime = 0;
+      errorSound.pause();
+      errorSound.currentTime = 0;
 
       // Mostra a moeda
       coin.src = coinImageURL;
       coin.classList.remove('animate', 'hidden');
       void coin.offsetWidth;
       coin.classList.add('animate');
+      coinSound.play();
       
       // Oculta após animação
       setTimeout(() => {
@@ -140,14 +147,20 @@ button.addEventListener('click', () => {
       // Reativa o botão após o delay do backend
       setTimeout(() => {
         button.disabled = false;
-      }, delay)
+      }, delay + 300)
     })
     .catch(error => {
       // Mostra imagem de erro
+      coinSound.pause();
+      coinSound.currentTime = 0;
+      errorSound.pause();
+      errorSound.currentTime = 0;
+
       coin.src = errorImageURL;
       coin.classList.remove('animate', 'hidden');
       void coin.offsetWidth;
       coin.classList.add('animate');
+      errorSound.play();
 
       setTimeout(() => {
         coin.classList.add('hidden');

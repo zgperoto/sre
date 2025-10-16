@@ -12,7 +12,7 @@ def index():
 
 @app.route('/status')
 def status():
-    delay = random.uniform(1, 3) # delay between 100ms and 1000ms
+    delay = random.uniform(1, 5) # delay between 100ms and 1000ms
     time.sleep(delay)
     return jsonify({"message": "Tudo certo!", "delay_ms": int(delay * 1000)}), 200
 

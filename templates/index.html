@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Status Checkersssssssss</title>
+</head>
+<style>
+    body {
+        background-image: url('https://cdn.suwalls.com/wallpapers/games/super-mario-world-25303-1920x1080.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+      position: relative;
+      display: inline-block;
+    }
+
+    button {
+        padding: 15px 40px;
+        font-weight: bold;
+        color: #FFF;
+        font-size: 91px;
+        background-color: #efda00;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px #999;
+    }
+
+    button:active {
+      box-shadow: 0 2px #666;
+      transform: translateY(2px);
+    }
+
+    .coin {
+      position: absolute;
+      bottom: 140px;
+      left: 50%;
+      width: 80px;
+      height: 80px;
+      background-color: transparent;
+      background-image: url('https://arenaesports.com.br/arena/coin.png');
+      background-size: cover;
+      z-index: 10;
+    }
+
+   .hidden {
+    display: none;
+    }
+
+    .counter{
+        font-weight: bold;
+        padding-top: 5px;
+        font-size: 22px;
+        color :#373218;
+    }
+
+    .animate {
+    animation: jumpCoin 1s ease-out forwards;
+    }
+
+    @keyframes jumpCoin {
+      0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      50% { transform: translateX(-50%) translateY(-100px); }
+      100% { transform: translateX(-50%) translateY(-150px); opacity: 0; }
+    }
+</style>
+<body>
+  <div class="container">
+    <button id="coin-button">?</button>
+    <div id="coin" class="coin hidden"></div>
+
+    <div id="counter" class="counter">Moedas: 0</div>
+  </div>
+
+<script>
+  const coin = document.getElementById('coin');
+  const button = document.getElementById('coin-button');
+  const counter = document.getElementById('counter');
+
+  // Declare the counter at the top level
+  let coinCount = 0
+
+  button.addEventListener('click', () => {
+    fetch('/status', { method: 'GET' })
+      .then(response => {
+        if (response.ok) {
+
+         // Atualiza contador
+          coinCount++;
+          counter.textContent = `Moedas: ${coinCount}`;
+
+          // Remove a classe para reiniciar a animação
+          coin.classList.remove('animate');
+          coin.classList.remove('hidden');
+
+          // Força o reflow para reiniciar a animação
+          void coin.offsetWidth;
+
+          // Reaplica a classe de animação
+          coin.classList.add('animate');
+
+          // Oculta após a duração da animação
+          setTimeout(() => {
+            coin.classList.add('hidden');
+          }, 1000); // tempo da animação
+        }
+      });
+  });
+</script>
+</body>
+
+</html>
+
